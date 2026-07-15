@@ -1,0 +1,36 @@
+name: Daily roster refresh
+
+on:
+  schedule:
+    # 09:00 UTC daily — after MLB Stats API rosters/box scores settle overnight.
+    - cron: '0 9 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - run: npm install
+
+      - run: npm run fetch
+
+      - name: Commit and push if the data changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- lineup_40man_2026.json; then
+            echo "No changes, nothing to commit."
+            exit 0
+          fi
+          git add lineup_40man_2026.json
+          git commit -m "Daily roster refresh $(date -u +%Y-%m-%d)"
+          git push

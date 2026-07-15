@@ -1,0 +1,12 @@
+{
+  "name": "sign-steal-data",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Daily fetch of MLB Stats API data for the SignSteal app's guess pool.",
+  "scripts": {
+    "fetch": "node scripts/fetchLineup40man.js"
+  },
+  "devDependencies": {
+    "jimp": "^1.6.1"
+  }
+}
