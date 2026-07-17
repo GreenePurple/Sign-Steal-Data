@@ -1,0 +1,94 @@
+[
+  {
+    "date": "2026-04-01",
+    "title": "Opening Week",
+    "items": [
+      { "id": "m1", "label": "Ichiro Suzuki", "meta": "Hitters" },
+      { "id": "m2", "label": "No-hitter", "meta": "Pitching feats" },
+      { "id": "m3", "label": "Gold Glove", "meta": "Defense awards" },
+      { "id": "m4", "label": "All-Star Game", "meta": "Season showcase" },
+      { "id": "m5", "label": "MVP", "meta": "Award winners" },
+      { "id": "m6", "label": "Rookie Debut", "meta": "First season" },
+      { "id": "m7", "label": "Switch-Hitter", "meta": "Batting style" },
+      { "id": "m8", "label": "Pinch Hitter", "meta": "Role players" },
+      { "id": "m9", "label": "Closer", "meta": "Bullpen role" },
+      { "id": "m10", "label": "Silver Slugger", "meta": "Offense awards" },
+      { "id": "m11", "label": "Perfect Game", "meta": "Rare pitching" },
+      { "id": "m12", "label": "Walk-Off", "meta": "Game-ending hit" },
+      { "id": "m13", "label": "Inside-the-Park", "meta": "Home run type" },
+      { "id": "m14", "label": "Triple Crown", "meta": "Historic season" },
+      { "id": "m15", "label": "Hall of Fame", "meta": "Cooperstown" },
+      { "id": "m16", "label": "Designated Hitter", "meta": "AL role" }
+    ],
+    "categories": [
+      { "id": "c1", "name": "Awards & Honors", "description": "Trophies and honors" },
+      { "id": "c2", "name": "Rare & Elite Feats", "description": "The rarest things a player can pull off" },
+      { "id": "c3", "name": "Player Roles", "description": "Special jobs a player can hold" },
+      { "id": "c4", "name": "Career Moments", "description": "Milestones along the way" }
+    ],
+    "assignment": {
+      "m1": "c4",
+      "m2": "c2",
+      "m3": "c1",
+      "m4": "c4",
+      "m5": "c1",
+      "m6": "c4",
+      "m7": "c3",
+      "m8": "c3",
+      "m9": "c3",
+      "m10": "c1",
+      "m11": "c2",
+      "m12": "c4",
+      "m13": "c2",
+      "m14": "c2",
+      "m15": "c1",
+      "m16": "c3"
+    }
+  },
+  {
+    "date": "2026-04-02",
+    "title": "Starter Set",
+    "items": [
+      { "id": "p1", "label": "Fastball", "meta": "Pitch types" },
+      { "id": "p2", "label": "Curveball", "meta": "Pitch types" },
+      { "id": "p3", "label": "Slider", "meta": "Pitch types" },
+      { "id": "p4", "label": "Changeup", "meta": "Pitch types" },
+      { "id": "p5", "label": "First Base", "meta": "Position" },
+      { "id": "p6", "label": "Shortstop", "meta": "Position" },
+      { "id": "p7", "label": "Center Field", "meta": "Position" },
+      { "id": "p8", "label": "Catcher", "meta": "Position" },
+      { "id": "p9", "label": "Cycle", "meta": "Game events" },
+      { "id": "p10", "label": "Stolen Base", "meta": "Game events" },
+      { "id": "p11", "label": "Double Play", "meta": "Game events" },
+      { "id": "p12", "label": "Grand Slam", "meta": "Game events" },
+      { "id": "p13", "label": "Line Drive", "meta": "Hit type" },
+      { "id": "p14", "label": "Fly Ball", "meta": "Hit type" },
+      { "id": "p15", "label": "Grounder", "meta": "Hit type" },
+      { "id": "p16", "label": "Pop-Up", "meta": "Hit type" }
+    ],
+    "categories": [
+      { "id": "d1", "name": "Pitch types" },
+      { "id": "d2", "name": "Field positions" },
+      { "id": "d3", "name": "Game events" },
+      { "id": "d4", "name": "Hit profiles" }
+    ],
+    "assignment": {
+      "p1": "d1",
+      "p2": "d1",
+      "p3": "d1",
+      "p4": "d1",
+      "p5": "d2",
+      "p6": "d2",
+      "p7": "d2",
+      "p8": "d2",
+      "p9": "d3",
+      "p10": "d3",
+      "p11": "d3",
+      "p12": "d3",
+      "p13": "d4",
+      "p14": "d4",
+      "p15": "d4",
+      "p16": "d4"
+    }
+  }
+]
