@@ -1,6 +1,6 @@
 [
   {
-    "date": "2026-07-21",
+    "date": "2026-07-22",
     "title": "Opening Week",
     "items": [
       { "id": "m1", "label": "Ichiro Suzuki", "meta": "Hitters" },
@@ -46,7 +46,7 @@
     }
   },
   {
-    "date": "2026-07-17",
+    "date": "2026-07-23",
     "title": "Starter Set",
     "items": [
       { "id": "p1", "label": "Fastball", "meta": "Pitch types" },
