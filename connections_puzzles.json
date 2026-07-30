@@ -1,94 +1,966 @@
-[
+/*
+ * Diamond Connections — August 2026 puzzle set
+ * ---------------------------------------------
+ * 31 daily puzzles, one per day of August. Same schema as your existing
+ * puzzle objects (date, title, items, categories, assignment), with one
+ * addition: each category now carries a `tier` field —
+ *   "dirt-easy" | "medium" | "hard" | "juiced"
+ * — so the front end can color-code difficulty the way NYT Connections
+ * does with yellow/green/blue/purple. If your renderer doesn't read
+ * `tier` yet, it's safe to ignore; everything else matches your format.
+ *
+ * JUICED categories (the hardest tier) always use one of two tricks,
+ * flagged in each item's `meta` field so you can style/hint them if you
+ * want:
+ *   - "Missing word: X"  → each item is one half of a two-word baseball
+ *                          term; the shared word (X) is never shown.
+ *   - "Synonym: X"       → each item is real slang for the same baseball
+ *                          concept (X), without naming the concept.
+ *
+ * Import/export line at the bottom is written for both CommonJS and ES
+ * module usage — delete whichever one your app doesn't use, or swap in
+ * however your existing file exports its puzzle array.
+ */
+
+const DIAMOND_CONNECTIONS_AUGUST_2026 = [
+
   {
-    "date": "2026-07-30",
-    "title": "Opening Week",
-    "items": [
-      { "id": "m1", "label": "Ichiro Suzuki", "meta": "Hitters" },
-      { "id": "m2", "label": "No-hitter", "meta": "Pitching feats" },
-      { "id": "m3", "label": "Gold Glove", "meta": "Defense awards" },
-      { "id": "m4", "label": "All-Star Game", "meta": "Season showcase" },
-      { "id": "m5", "label": "MVP", "meta": "Award winners" },
-      { "id": "m6", "label": "Rookie Debut", "meta": "First season" },
-      { "id": "m7", "label": "Switch-Hitter", "meta": "Batting style" },
-      { "id": "m8", "label": "Pinch Hitter", "meta": "Role players" },
-      { "id": "m9", "label": "Closer", "meta": "Bullpen role" },
-      { "id": "m10", "label": "Silver Slugger", "meta": "Offense awards" },
-      { "id": "m11", "label": "Perfect Game", "meta": "Rare pitching" },
-      { "id": "m12", "label": "Walk-Off", "meta": "Game-ending hit" },
-      { "id": "m13", "label": "Inside-the-Park", "meta": "Home run type" },
-      { "id": "m14", "label": "Triple Crown", "meta": "Historic season" },
-      { "id": "m15", "label": "Hall of Fame", "meta": "Cooperstown" },
-      { "id": "m16", "label": "Designated Hitter", "meta": "AL role" }
+    date: "2026-08-01",
+    title: "Trade Deadline",
+    items: [
+      { id: "m1", label: "First base", meta: "Infield spot" },
+      { id: "m2", label: "Second base", meta: "Infield spot" },
+      { id: "m3", label: "Third base", meta: "Infield spot" },
+      { id: "m4", label: "Shortstop", meta: "Infield spot" },
+      { id: "m5", label: "Trade", meta: "Deadline move" },
+      { id: "m6", label: "Waiver claim", meta: "Deadline move" },
+      { id: "m7", label: "Designation for assignment", meta: "Roster move" },
+      { id: "m8", label: "Rental player", meta: "Deadline move" },
+      { id: "m9", label: "Randy Johnson", meta: "Cy Young winner" },
+      { id: "m10", label: "Pedro Martinez", meta: "Cy Young winner" },
+      { id: "m11", label: "Greg Maddux", meta: "Cy Young winner" },
+      { id: "m12", label: "Roger Clemens", meta: "Cy Young winner" },
+      { id: "m13", label: "Strike", meta: "Missing word: OUT" },
+      { id: "m14", label: "Fly", meta: "Missing word: OUT" },
+      { id: "m15", label: "Ground", meta: "Missing word: OUT" },
+      { id: "m16", label: "Pop", meta: "Missing word: OUT" }
     ],
-    "categories": [
-      { "id": "c1", "name": "Awards & Honors", "description": "Trophies and honors" },
-      { "id": "c2", "name": "Rare & Elite Feats", "description": "The rarest things a player can pull off" },
-      { "id": "c3", "name": "Player Roles", "description": "Special jobs a player can hold" },
-      { "id": "c4", "name": "Career Moments", "description": "Milestones along the way" }
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Where players stand", description: "Basic infield positions" },
+      { id: "c2", tier: "medium", name: "Moves at the deadline", description: "Transactions that shake up a roster" },
+      { id: "c3", tier: "hard", name: "Cy Young winners", description: "Pitchers who won the game's top pitching award" },
+      { id: "c4", tier: "juiced", name: "JUICED: add \"out\"", description: "Each word becomes a type of out when \"out\" follows it" }
     ],
-    "assignment": {
-      "m1": "c4",
-      "m2": "c2",
-      "m3": "c1",
-      "m4": "c4",
-      "m5": "c1",
-      "m6": "c4",
-      "m7": "c3",
-      "m8": "c3",
-      "m9": "c3",
-      "m10": "c1",
-      "m11": "c2",
-      "m12": "c4",
-      "m13": "c2",
-      "m14": "c2",
-      "m15": "c1",
-      "m16": "c3"
-    }
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
   },
+
   {
-    "date": "2026-07-23",
-    "title": "Starter Set",
-    "items": [
-      { "id": "p1", "label": "Fastball", "meta": "Pitch types" },
-      { "id": "p2", "label": "Curveball", "meta": "Pitch types" },
-      { "id": "p3", "label": "Slider", "meta": "Pitch types" },
-      { "id": "p4", "label": "Changeup", "meta": "Pitch types" },
-      { "id": "p5", "label": "First Base", "meta": "Position" },
-      { "id": "p6", "label": "Shortstop", "meta": "Position" },
-      { "id": "p7", "label": "Center Field", "meta": "Position" },
-      { "id": "p8", "label": "Catcher", "meta": "Position" },
-      { "id": "p9", "label": "Cycle", "meta": "Game events" },
-      { "id": "p10", "label": "Stolen Base", "meta": "Game events" },
-      { "id": "p11", "label": "Double Play", "meta": "Game events" },
-      { "id": "p12", "label": "Grand Slam", "meta": "Game events" },
-      { "id": "p13", "label": "Line Drive", "meta": "Hit type" },
-      { "id": "p14", "label": "Fly Ball", "meta": "Hit type" },
-      { "id": "p15", "label": "Grounder", "meta": "Hit type" },
-      { "id": "p16", "label": "Pop-Up", "meta": "Hit type" }
+    date: "2026-08-02",
+    title: "Leaving the Yard",
+    items: [
+      { id: "m1", label: "Glove", meta: "Basic gear" },
+      { id: "m2", label: "Bat", meta: "Basic gear" },
+      { id: "m3", label: "Helmet", meta: "Basic gear" },
+      { id: "m4", label: "Cleats", meta: "Basic gear" },
+      { id: "m5", label: "Steal sign", meta: "Dugout signal" },
+      { id: "m6", label: "Bunt sign", meta: "Dugout signal" },
+      { id: "m7", label: "Take sign", meta: "Dugout signal" },
+      { id: "m8", label: "Hit-and-run", meta: "Dugout signal" },
+      { id: "m9", label: "Barry Bonds", meta: "700+ home runs" },
+      { id: "m10", label: "Hank Aaron", meta: "700+ home runs" },
+      { id: "m11", label: "Babe Ruth", meta: "700+ home runs" },
+      { id: "m12", label: "Albert Pujols", meta: "700+ home runs" },
+      { id: "m13", label: "Dinger", meta: "Synonym: home run" },
+      { id: "m14", label: "Tater", meta: "Synonym: home run" },
+      { id: "m15", label: "Bomb", meta: "Synonym: home run" },
+      { id: "m16", label: "Moonshot", meta: "Synonym: home run" }
     ],
-    "categories": [
-      { "id": "d1", "name": "Pitch types" },
-      { "id": "d2", "name": "Field positions" },
-      { "id": "d3", "name": "Game events" },
-      { "id": "d4", "name": "Hit profiles" }
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Gear bag", description: "Standard equipment every player needs" },
+      { id: "c2", tier: "medium", name: "Read the signs", description: "Signals flashed from the dugout or coach's box" },
+      { id: "c3", tier: "hard", name: "Career home run leaders", description: "Among the highest home run totals ever hit" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for a home run", description: "All nicknames for leaving the yard" }
     ],
-    "assignment": {
-      "p1": "d1",
-      "p2": "d1",
-      "p3": "d1",
-      "p4": "d1",
-      "p5": "d2",
-      "p6": "d2",
-      "p7": "d2",
-      "p8": "d2",
-      "p9": "d3",
-      "p10": "d3",
-      "p11": "d3",
-      "p12": "d3",
-      "p13": "d4",
-      "p14": "d4",
-      "p15": "d4",
-      "p16": "d4"
-    }
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-03",
+    title: "Around the Horn",
+    items: [
+      { id: "m1", label: "First base", meta: "Base on the path" },
+      { id: "m2", label: "Second base", meta: "Base on the path" },
+      { id: "m3", label: "Third base", meta: "Base on the path" },
+      { id: "m4", label: "Home plate", meta: "Base on the path" },
+      { id: "m5", label: "Foul ball", meta: "Stadium tradition" },
+      { id: "m6", label: "Kiss cam", meta: "Stadium tradition" },
+      { id: "m7", label: "Seventh-inning stretch", meta: "Stadium tradition" },
+      { id: "m8", label: "The wave", meta: "Stadium tradition" },
+      { id: "m9", label: "Don Larsen", meta: "Perfect game" },
+      { id: "m10", label: "Sandy Koufax", meta: "Perfect game" },
+      { id: "m11", label: "Randy Johnson", meta: "Perfect game" },
+      { id: "m12", label: "David Cone", meta: "Perfect game" },
+      { id: "m13", label: "Play", meta: "Missing word: DOUBLE" },
+      { id: "m14", label: "Header", meta: "Missing word: DOUBLE" },
+      { id: "m15", label: "Steal", meta: "Missing word: DOUBLE" },
+      { id: "m16", label: "Switch", meta: "Missing word: DOUBLE" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Around the bases", description: "The path a runner circles to score" },
+      { id: "c2", tier: "medium", name: "Ballpark traditions", description: "Things fans do or see between pitches" },
+      { id: "c3", tier: "hard", name: "Perfect game pitchers", description: "Retired all 27 batters they faced" },
+      { id: "c4", tier: "juiced", name: "JUICED: add \"double\" before", description: "Each word follows \"double\" to name a baseball term" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-04",
+    title: "Breaking Ball",
+    items: [
+      { id: "m1", label: "Fastball", meta: "Basic pitch" },
+      { id: "m2", label: "Curveball", meta: "Basic pitch" },
+      { id: "m3", label: "Slider", meta: "Basic pitch" },
+      { id: "m4", label: "Changeup", meta: "Basic pitch" },
+      { id: "m5", label: "Black Sox scandal", meta: "Scandal" },
+      { id: "m6", label: "Pine tar incident", meta: "Scandal" },
+      { id: "m7", label: "Steroid era", meta: "Scandal" },
+      { id: "m8", label: "Sign-stealing scheme", meta: "Scandal" },
+      { id: "m9", label: "Miguel Cabrera", meta: "Triple Crown" },
+      { id: "m10", label: "Carl Yastrzemski", meta: "Triple Crown" },
+      { id: "m11", label: "Frank Robinson", meta: "Triple Crown" },
+      { id: "m12", label: "Ted Williams", meta: "Triple Crown" },
+      { id: "m13", label: "Hurler", meta: "Synonym: pitcher" },
+      { id: "m14", label: "Ace", meta: "Synonym: pitcher" },
+      { id: "m15", label: "Moundsman", meta: "Synonym: pitcher" },
+      { id: "m16", label: "Flamethrower", meta: "Synonym: pitcher" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Pitch types", description: "The basic pitches every pitcher throws" },
+      { id: "c2", tier: "medium", name: "Say it ain't so", description: "Controversies that rocked the sport" },
+      { id: "c3", tier: "hard", name: "Triple Crown winners", description: "Led their league in average, home runs, and RBI in one season" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for a pitcher", description: "All nicknames for the player on the mound" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-05",
+    title: "Free Baseball",
+    items: [
+      { id: "m1", label: "Umpire", meta: "Game official" },
+      { id: "m2", label: "Scorekeeper", meta: "Game official" },
+      { id: "m3", label: "Manager", meta: "Game official" },
+      { id: "m4", label: "Coach", meta: "Game official" },
+      { id: "m5", label: "Ghost runner", meta: "Extra innings" },
+      { id: "m6", label: "Walk-off win", meta: "Extra innings" },
+      { id: "m7", label: "Free baseball", meta: "Extra innings" },
+      { id: "m8", label: "Tiebreaker rule", meta: "Extra innings" },
+      { id: "m9", label: "Pete Rose", meta: "3,000 hits" },
+      { id: "m10", label: "Ty Cobb", meta: "3,000 hits" },
+      { id: "m11", label: "Hank Aaron", meta: "3,000 hits" },
+      { id: "m12", label: "Derek Jeter", meta: "3,000 hits" },
+      { id: "m13", label: "Miscue", meta: "Synonym: error" },
+      { id: "m14", label: "Boot", meta: "Synonym: error" },
+      { id: "m15", label: "Muff", meta: "Synonym: error" },
+      { id: "m16", label: "Bobble", meta: "Synonym: error" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Who's running the show", description: "People with jobs on the field, not on the roster" },
+      { id: "c2", tier: "medium", name: "Extra-inning extras", description: "Terms unique to games that go long" },
+      { id: "c3", tier: "hard", name: "3,000 hit club", description: "Players who collected at least 3,000 career hits" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for an error", description: "All ways to say a fielder botched the play" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-06",
+    title: "Skipper's Orders",
+    items: [
+      { id: "m1", label: "Jersey", meta: "Uniform piece" },
+      { id: "m2", label: "Cap", meta: "Uniform piece" },
+      { id: "m3", label: "Cleats", meta: "Uniform piece" },
+      { id: "m4", label: "Batting helmet", meta: "Uniform piece" },
+      { id: "m5", label: "Safe", meta: "Umpire call" },
+      { id: "m6", label: "Out", meta: "Umpire call" },
+      { id: "m7", label: "Fair", meta: "Umpire call" },
+      { id: "m8", label: "Foul", meta: "Umpire call" },
+      { id: "m9", label: "Willie Mays", meta: "500 HR club" },
+      { id: "m10", label: "Mickey Mantle", meta: "500 HR club" },
+      { id: "m11", label: "Hank Aaron", meta: "500 HR club" },
+      { id: "m12", label: "Ted Williams", meta: "500 HR club" },
+      { id: "m13", label: "Skipper", meta: "Synonym: manager" },
+      { id: "m14", label: "Pilot", meta: "Synonym: manager" },
+      { id: "m15", label: "Bench boss", meta: "Synonym: manager" },
+      { id: "m16", label: "Field general", meta: "Synonym: manager" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Uniform check", description: "Parts of a player's game-day outfit" },
+      { id: "c2", tier: "medium", name: "Call it", description: "Words an umpire shouts on every play" },
+      { id: "c3", tier: "hard", name: "500 home run club (early era)", description: "Sluggers who reached 500 homers before the modern power surge" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for a manager", description: "All ways to refer to the person filling out the lineup card" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-07",
+    title: "Diamond Geometry",
+    items: [
+      { id: "m1", label: "Pitcher's mound", meta: "Field feature" },
+      { id: "m2", label: "Home plate", meta: "Field feature" },
+      { id: "m3", label: "Foul line", meta: "Field feature" },
+      { id: "m4", label: "Dugout", meta: "Field feature" },
+      { id: "m5", label: "Line drive", meta: "Type of contact" },
+      { id: "m6", label: "Ground ball", meta: "Type of contact" },
+      { id: "m7", label: "Pop fly", meta: "Type of contact" },
+      { id: "m8", label: "Bunt", meta: "Type of contact" },
+      { id: "m9", label: "Jackie Robinson", meta: "Rookie of the Year" },
+      { id: "m10", label: "Ichiro Suzuki", meta: "Rookie of the Year" },
+      { id: "m11", label: "Derek Jeter", meta: "Rookie of the Year" },
+      { id: "m12", label: "Albert Pujols", meta: "Rookie of the Year" },
+      { id: "m13", label: "Line", meta: "Missing word: UP" },
+      { id: "m14", label: "Set", meta: "Missing word: UP" },
+      { id: "m15", label: "Wind", meta: "Missing word: UP" },
+      { id: "m16", label: "Warm", meta: "Missing word: UP" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Parts of the field", description: "Spots you can point to on the diamond" },
+      { id: "c2", tier: "medium", name: "Making contact", description: "What happens when bat meets ball" },
+      { id: "c3", tier: "hard", name: "Rookie of the Year winners", description: "Won the award for the best first-year player" },
+      { id: "c4", tier: "juiced", name: "JUICED: add \"up\" after", description: "Each word comes before \"up\" to name a baseball term" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-08",
+    title: "Count On It",
+    items: [
+      { id: "m1", label: "Ball", meta: "Basic count" },
+      { id: "m2", label: "Strike", meta: "Basic count" },
+      { id: "m3", label: "Out", meta: "Basic count" },
+      { id: "m4", label: "Inning", meta: "Basic count" },
+      { id: "m5", label: "Closer", meta: "Bullpen job" },
+      { id: "m6", label: "Setup man", meta: "Bullpen job" },
+      { id: "m7", label: "Long reliever", meta: "Bullpen job" },
+      { id: "m8", label: "Middle reliever", meta: "Bullpen job" },
+      { id: "m9", label: "Cal Ripken Jr.", meta: "Consecutive games" },
+      { id: "m10", label: "Lou Gehrig", meta: "Consecutive games" },
+      { id: "m11", label: "Everett Scott", meta: "Consecutive games" },
+      { id: "m12", label: "Steve Garvey", meta: "Consecutive games" },
+      { id: "m13", label: "Heater", meta: "Synonym: fastball" },
+      { id: "m14", label: "Cheese", meta: "Synonym: fastball" },
+      { id: "m15", label: "Gas", meta: "Synonym: fastball" },
+      { id: "m16", label: "Smoke", meta: "Synonym: fastball" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Count 'em", description: "What the umpire is literally counting" },
+      { id: "c2", tier: "medium", name: "Bullpen roles", description: "Jobs a reliever might hold" },
+      { id: "c3", tier: "hard", name: "Iron man streaks", description: "Known for extraordinary consecutive-games-played streaks" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for a fastball", description: "All ways to say a pitch has serious velocity" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-09",
+    title: "Bagger Business",
+    items: [
+      { id: "m1", label: "MVP", meta: "League award" },
+      { id: "m2", label: "Cy Young", meta: "League award" },
+      { id: "m3", label: "Gold Glove", meta: "League award" },
+      { id: "m4", label: "Rookie of the Year", meta: "League award" },
+      { id: "m5", label: "ERA", meta: "Stat abbreviation" },
+      { id: "m6", label: "RBI", meta: "Stat abbreviation" },
+      { id: "m7", label: "OBP", meta: "Stat abbreviation" },
+      { id: "m8", label: "WHIP", meta: "Stat abbreviation" },
+      { id: "m9", label: "Fenway Park", meta: "Historic ballpark" },
+      { id: "m10", label: "Wrigley Field", meta: "Historic ballpark" },
+      { id: "m11", label: "Dodger Stadium", meta: "Historic ballpark" },
+      { id: "m12", label: "Angel Stadium", meta: "Historic ballpark" },
+      { id: "m13", label: "Four", meta: "Missing word: BAGGER" },
+      { id: "m14", label: "Three", meta: "Missing word: BAGGER" },
+      { id: "m15", label: "Two", meta: "Missing word: BAGGER" },
+      { id: "m16", label: "One", meta: "Missing word: BAGGER" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Award night", description: "Trophies handed out around the league" },
+      { id: "c2", tier: "medium", name: "Read the box score", description: "Abbreviations you'll find in a stat line" },
+      { id: "c3", tier: "hard", name: "Ballparks still in use", description: "Home stadiums that have hosted baseball for decades" },
+      { id: "c4", tier: "juiced", name: "JUICED: add \"bagger\" after", description: "Each number becomes a type of hit when \"bagger\" follows" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-10",
+    title: "Batting Order",
+    items: [
+      { id: "m1", label: "Leadoff hitter", meta: "Lineup role" },
+      { id: "m2", label: "Cleanup hitter", meta: "Lineup role" },
+      { id: "m3", label: "Pinch hitter", meta: "Lineup role" },
+      { id: "m4", label: "Designated hitter", meta: "Lineup role" },
+      { id: "m5", label: "Tommy John surgery", meta: "Injury note" },
+      { id: "m6", label: "Rotator cuff injury", meta: "Injury note" },
+      { id: "m7", label: "Hamstring strain", meta: "Injury note" },
+      { id: "m8", label: "Concussion protocol", meta: "Injury note" },
+      { id: "m9", label: "3 (Babe Ruth)", meta: "Retired number" },
+      { id: "m10", label: "4 (Lou Gehrig)", meta: "Retired number" },
+      { id: "m11", label: "7 (Mickey Mantle)", meta: "Retired number" },
+      { id: "m12", label: "42 (Jackie Robinson)", meta: "Retired number" },
+      { id: "m13", label: "K", meta: "Synonym: strikeout" },
+      { id: "m14", label: "Whiff", meta: "Synonym: strikeout" },
+      { id: "m15", label: "Punch-out", meta: "Synonym: strikeout" },
+      { id: "m16", label: "Fan", meta: "Synonym: strikeout" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Batting order basics", description: "Roles tied to a spot in the lineup" },
+      { id: "c2", tier: "medium", name: "On the injured list", description: "Reasons a player lands on the IL" },
+      { id: "c3", tier: "hard", name: "Retired Yankees numbers", description: "Numbers hanging in Monument Park" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for a strikeout", description: "All ways to say a batter went down" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-11",
+    title: "Nine Spots",
+    items: [
+      { id: "m1", label: "Catcher", meta: "Defensive position" },
+      { id: "m2", label: "Pitcher", meta: "Defensive position" },
+      { id: "m3", label: "Center field", meta: "Defensive position" },
+      { id: "m4", label: "Right field", meta: "Defensive position" },
+      { id: "m5", label: "Cactus League", meta: "Spring training term" },
+      { id: "m6", label: "Grapefruit League", meta: "Spring training term" },
+      { id: "m7", label: "Exhibition game", meta: "Spring training term" },
+      { id: "m8", label: "Roster cuts", meta: "Spring training term" },
+      { id: "m9", label: "Nolan Ryan", meta: "No-hitter" },
+      { id: "m10", label: "Sandy Koufax", meta: "No-hitter" },
+      { id: "m11", label: "Justin Verlander", meta: "No-hitter" },
+      { id: "m12", label: "Max Scherzer", meta: "No-hitter" },
+      { id: "m13", label: "Walk", meta: "Missing word: OFF" },
+      { id: "m14", label: "Pick", meta: "Missing word: OFF" },
+      { id: "m15", label: "Lead", meta: "Missing word: OFF" },
+      { id: "m16", label: "Play", meta: "Missing word: OFF" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Nine positions", description: "Spots on defense, numbered one through nine" },
+      { id: "c2", tier: "medium", name: "Spring training vocabulary", description: "Terms specific to February and March baseball" },
+      { id: "c3", tier: "hard", name: "No-hitter club (modern era)", description: "Threw a no-hitter within the last several decades" },
+      { id: "c4", tier: "juiced", name: "JUICED: add \"off\" after", description: "Each word comes before \"off\" to name a baseball term" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-12",
+    title: "Old Apple",
+    items: [
+      { id: "m1", label: "Bat rack", meta: "Dugout item" },
+      { id: "m2", label: "Water cooler", meta: "Dugout item" },
+      { id: "m3", label: "Bench", meta: "Dugout item" },
+      { id: "m4", label: "Batting donut", meta: "Dugout item" },
+      { id: "m5", label: "Grand slam", meta: "Home run type" },
+      { id: "m6", label: "Solo shot", meta: "Home run type" },
+      { id: "m7", label: "Inside-the-park homer", meta: "Home run type" },
+      { id: "m8", label: "Walk-off homer", meta: "Home run type" },
+      { id: "m9", label: "1998 home run chase", meta: "Steroid era moment" },
+      { id: "m10", label: "2001 single-season HR record", meta: "Steroid era moment" },
+      { id: "m11", label: "Mitchell Report", meta: "Steroid era moment" },
+      { id: "m12", label: "BALCO investigation", meta: "Steroid era moment" },
+      { id: "m13", label: "Horsehide", meta: "Synonym: the ball" },
+      { id: "m14", label: "Pill", meta: "Synonym: the ball" },
+      { id: "m15", label: "Apple", meta: "Synonym: the ball" },
+      { id: "m16", label: "Cowhide", meta: "Synonym: the ball" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "What's in the dugout", description: "Things you'd find on the bench" },
+      { id: "c2", tier: "medium", name: "Types of home runs", description: "Different flavors of leaving the yard" },
+      { id: "c3", tier: "hard", name: "Steroid era milestones", description: "Moments that define baseball's power-inflated years" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for the baseball", description: "Old-school nicknames for the ball itself" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-13",
+    title: "Catcher's Gear",
+    items: [
+      { id: "m1", label: "Catcher's mitt", meta: "Catcher's equipment" },
+      { id: "m2", label: "Shin guards", meta: "Catcher's equipment" },
+      { id: "m3", label: "Chest protector", meta: "Catcher's equipment" },
+      { id: "m4", label: "Face mask", meta: "Catcher's equipment" },
+      { id: "m5", label: "Rookie ball", meta: "Minor league level" },
+      { id: "m6", label: "Single-A", meta: "Minor league level" },
+      { id: "m7", label: "Double-A", meta: "Minor league level" },
+      { id: "m8", label: "Triple-A", meta: "Minor league level" },
+      { id: "m9", label: "Kirk Gibson", meta: "World Series walk-off" },
+      { id: "m10", label: "Joe Carter", meta: "World Series walk-off" },
+      { id: "m11", label: "Bill Mazeroski", meta: "World Series walk-off" },
+      { id: "m12", label: "David Freese", meta: "World Series walk-off" },
+      { id: "m13", label: "Knock", meta: "Synonym: base hit" },
+      { id: "m14", label: "Safety", meta: "Synonym: base hit" },
+      { id: "m15", label: "Bingle", meta: "Synonym: base hit" },
+      { id: "m16", label: "Blow", meta: "Synonym: base hit" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Catcher's gear", description: "Equipment that protects the player behind the plate" },
+      { id: "c2", tier: "medium", name: "Minor league ladder", description: "Levels a prospect climbs on the way up" },
+      { id: "c3", tier: "hard", name: "World Series walk-off legends", description: "Ended a World Series game with one swing" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for a base hit", description: "Old and new ways to say the batter reached safely" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-14",
+    title: "First Class",
+    items: [
+      { id: "m1", label: "Rain delay", meta: "Weather term" },
+      { id: "m2", label: "Tarp", meta: "Weather term" },
+      { id: "m3", label: "Doubleheader", meta: "Weather term" },
+      { id: "m4", label: "Postponement", meta: "Weather term" },
+      { id: "m5", label: "Balk", meta: "Umpire ruling" },
+      { id: "m6", label: "Infield fly rule", meta: "Umpire ruling" },
+      { id: "m7", label: "Interference", meta: "Umpire ruling" },
+      { id: "m8", label: "Obstruction", meta: "Umpire ruling" },
+      { id: "m9", label: "Babe Ruth", meta: "1936 HOF class" },
+      { id: "m10", label: "Ty Cobb", meta: "1936 HOF class" },
+      { id: "m11", label: "Honus Wagner", meta: "1936 HOF class" },
+      { id: "m12", label: "Walter Johnson", meta: "1936 HOF class" },
+      { id: "m13", label: "Play", meta: "Missing word: TRIPLE" },
+      { id: "m14", label: "Crown", meta: "Missing word: TRIPLE" },
+      { id: "m15", label: "A", meta: "Missing word: TRIPLE" },
+      { id: "m16", label: "Steal", meta: "Missing word: TRIPLE" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Weather delay", description: "What happens when the skies open up" },
+      { id: "c2", tier: "medium", name: "The umpire's call", description: "Rulings that go beyond a simple ball or strike" },
+      { id: "c3", tier: "hard", name: "First Hall of Fame class (1936)", description: "Inducted in Cooperstown's inaugural class" },
+      { id: "c4", tier: "juiced", name: "JUICED: add \"triple\" before", description: "Each word follows \"triple\" to name a baseball term" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-15",
+    title: "Chasing 61",
+    items: [
+      { id: "m1", label: "Walk", meta: "Way to reach base" },
+      { id: "m2", label: "Hit by pitch", meta: "Way to reach base" },
+      { id: "m3", label: "Error", meta: "Way to reach base" },
+      { id: "m4", label: "Fielder's choice", meta: "Way to reach base" },
+      { id: "m5", label: "Stolen base", meta: "Baserunning term" },
+      { id: "m6", label: "Steal sign", meta: "Baserunning term" },
+      { id: "m7", label: "Caught stealing", meta: "Baserunning term" },
+      { id: "m8", label: "Pickoff move", meta: "Baserunning term" },
+      { id: "m9", label: "Babe Ruth", meta: "Single-season HR record" },
+      { id: "m10", label: "Roger Maris", meta: "Single-season HR record" },
+      { id: "m11", label: "Mark McGwire", meta: "Single-season HR record" },
+      { id: "m12", label: "Barry Bonds", meta: "Single-season HR record" },
+      { id: "m13", label: "Slugger", meta: "Synonym: power hitter" },
+      { id: "m14", label: "Basher", meta: "Synonym: power hitter" },
+      { id: "m15", label: "Masher", meta: "Synonym: power hitter" },
+      { id: "m16", label: "Bopper", meta: "Synonym: power hitter" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Take your base", description: "Ways to reach first without a hit" },
+      { id: "c2", tier: "medium", name: "Speed on the bases", description: "Terms tied to stealing a bag" },
+      { id: "c3", tier: "hard", name: "Single-season home run record holders", description: "Held the record for most homers in one season" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for a power hitter", description: "All nicknames for a player who hits for power" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-16",
+    title: "Take Me Out",
+    items: [
+      { id: "m1", label: "Barrel", meta: "Bat part" },
+      { id: "m2", label: "Handle", meta: "Bat part" },
+      { id: "m3", label: "Knob", meta: "Bat part" },
+      { id: "m4", label: "Label", meta: "Bat part" },
+      { id: "m5", label: "Hot dog", meta: "Concession stand" },
+      { id: "m6", label: "Peanuts", meta: "Concession stand" },
+      { id: "m7", label: "Cracker Jack", meta: "Concession stand" },
+      { id: "m8", label: "Nachos", meta: "Concession stand" },
+      { id: "m9", label: "Josh Gibson", meta: "Negro Leagues star" },
+      { id: "m10", label: "Satchel Paige", meta: "Negro Leagues star" },
+      { id: "m11", label: "Buck O'Neil", meta: "Negro Leagues star" },
+      { id: "m12", label: "Cool Papa Bell", meta: "Negro Leagues star" },
+      { id: "m13", label: "Run", meta: "Missing word: HOME" },
+      { id: "m14", label: "Plate", meta: "Missing word: HOME" },
+      { id: "m15", label: "Stand", meta: "Missing word: HOME" },
+      { id: "m16", label: "Field", meta: "Missing word: HOME" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Parts of a bat", description: "Pieces that make up the lumber" },
+      { id: "c2", tier: "medium", name: "Ballpark eats", description: "Snacks from the classic seventh-inning-stretch song" },
+      { id: "c3", tier: "hard", name: "Negro Leagues legends", description: "Stars of the Negro Leagues, now recognized as major league history" },
+      { id: "c4", tier: "juiced", name: "JUICED: add \"home\" before", description: "Each word follows \"home\" to name a baseball term" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-17",
+    title: "Steal Sign",
+    items: [
+      { id: "m1", label: "Steal", meta: "Coach's sign" },
+      { id: "m2", label: "Bunt", meta: "Coach's sign" },
+      { id: "m3", label: "Hit-and-run", meta: "Coach's sign" },
+      { id: "m4", label: "Take", meta: "Coach's sign" },
+      { id: "m5", label: "Wild card round", meta: "Postseason round" },
+      { id: "m6", label: "Division series", meta: "Postseason round" },
+      { id: "m7", label: "League Championship Series", meta: "Postseason round" },
+      { id: "m8", label: "World Series", meta: "Postseason round" },
+      { id: "m9", label: "Rickey Henderson", meta: "500 steals" },
+      { id: "m10", label: "Lou Brock", meta: "500 steals" },
+      { id: "m11", label: "Ty Cobb", meta: "500 steals" },
+      { id: "m12", label: "Vince Coleman", meta: "500 steals" },
+      { id: "m13", label: "Ump", meta: "Synonym: umpire" },
+      { id: "m14", label: "Blue", meta: "Synonym: umpire" },
+      { id: "m15", label: "Arbiter", meta: "Synonym: umpire" },
+      { id: "m16", label: "Man in blue", meta: "Synonym: umpire" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Base coach signals", description: "Signs flashed from the third-base coach's box" },
+      { id: "c2", tier: "medium", name: "Postseason path", description: "Rounds a team plays through on the way to a title" },
+      { id: "c3", tier: "hard", name: "500 stolen base club", description: "Ran their way to at least 500 career steals" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for an umpire", description: "All ways to refer to the person calling the game" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-18",
+    title: "Free Agency",
+    items: [
+      { id: "m1", label: "Left field", meta: "Outfield zone" },
+      { id: "m2", label: "Center field", meta: "Outfield zone" },
+      { id: "m3", label: "Right field", meta: "Outfield zone" },
+      { id: "m4", label: "Foul territory", meta: "Outfield zone" },
+      { id: "m5", label: "Free agency", meta: "Contract term" },
+      { id: "m6", label: "Arbitration", meta: "Contract term" },
+      { id: "m7", label: "Qualifying offer", meta: "Contract term" },
+      { id: "m8", label: "Luxury tax", meta: "Contract term" },
+      { id: "m9", label: "Roger Clemens", meta: "Multi Cy Young" },
+      { id: "m10", label: "Randy Johnson", meta: "Multi Cy Young" },
+      { id: "m11", label: "Greg Maddux", meta: "Multi Cy Young" },
+      { id: "m12", label: "Steve Carlton", meta: "Multi Cy Young" },
+      { id: "m13", label: "Bushes", meta: "Synonym: minors" },
+      { id: "m14", label: "Farm", meta: "Synonym: minors" },
+      { id: "m15", label: "Sticks", meta: "Synonym: minors" },
+      { id: "m16", label: "Bus leagues", meta: "Synonym: minors" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Left, right, or center", description: "Zones that make up the outfield" },
+      { id: "c2", tier: "medium", name: "Contract talk", description: "Terms from the business side of the game" },
+      { id: "c3", tier: "hard", name: "Multiple Cy Young winners", description: "Won the pitching award more than once" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for the minor leagues", description: "All ways to say a player is below the majors" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-19",
+    title: "Freshman Class",
+    items: [
+      { id: "m1", label: "Final out", meta: "Game ending" },
+      { id: "m2", label: "Walk-off win", meta: "Game ending" },
+      { id: "m3", label: "Mercy rule", meta: "Game ending" },
+      { id: "m4", label: "Curfew", meta: "Game ending" },
+      { id: "m5", label: "Batting average", meta: "Common stat" },
+      { id: "m6", label: "On-base percentage", meta: "Common stat" },
+      { id: "m7", label: "Slugging percentage", meta: "Common stat" },
+      { id: "m8", label: "Earned run average", meta: "Common stat" },
+      { id: "m9", label: "Connie Mack", meta: "Winningest manager" },
+      { id: "m10", label: "John McGraw", meta: "Winningest manager" },
+      { id: "m11", label: "Tony La Russa", meta: "Winningest manager" },
+      { id: "m12", label: "Bobby Cox", meta: "Winningest manager" },
+      { id: "m13", label: "Rook", meta: "Synonym: rookie" },
+      { id: "m14", label: "Greenhorn", meta: "Synonym: rookie" },
+      { id: "m15", label: "Freshman", meta: "Synonym: rookie" },
+      { id: "m16", label: "Newbie", meta: "Synonym: rookie" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "How a game ends", description: "Ways a ballgame reaches its final out" },
+      { id: "c2", tier: "medium", name: "Say the stat", description: "Numbers that follow a hitter or pitcher's name" },
+      { id: "c3", tier: "hard", name: "Winningest managers in history", description: "The four managers with the most career wins ever" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for a rookie", description: "All ways to say a player is new to the league" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-20",
+    title: "Web Gem",
+    items: [
+      { id: "m1", label: "Ball", meta: "At-bat event" },
+      { id: "m2", label: "Strike", meta: "At-bat event" },
+      { id: "m3", label: "Foul", meta: "At-bat event" },
+      { id: "m4", label: "Wild pitch", meta: "At-bat event" },
+      { id: "m5", label: "Diving catch", meta: "Defensive play" },
+      { id: "m6", label: "Web gem", meta: "Defensive play" },
+      { id: "m7", label: "Double play", meta: "Defensive play" },
+      { id: "m8", label: "Relay throw", meta: "Defensive play" },
+      { id: "m9", label: "Willie Mays", meta: "Multi Gold Glove CF" },
+      { id: "m10", label: "Ken Griffey Jr.", meta: "Multi Gold Glove CF" },
+      { id: "m11", label: "Andruw Jones", meta: "Multi Gold Glove CF" },
+      { id: "m12", label: "Torii Hunter", meta: "Multi Gold Glove CF" },
+      { id: "m13", label: "Skid", meta: "Synonym: losing streak" },
+      { id: "m14", label: "Slide", meta: "Synonym: losing streak" },
+      { id: "m15", label: "Funk", meta: "Synonym: losing streak" },
+      { id: "m16", label: "Tailspin", meta: "Synonym: losing streak" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Pitch count", description: "Things that add up on every at-bat" },
+      { id: "c2", tier: "medium", name: "Fielding feats", description: "Defensive plays worth a highlight reel" },
+      { id: "c3", tier: "hard", name: "Multiple Gold Glove center fielders", description: "Won multiple Gold Gloves patrolling center field" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for a losing streak", description: "All ways to describe a team that can't buy a win" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-21",
+    title: "Say Hey",
+    items: [
+      { id: "m1", label: "Open stance", meta: "Batting stance" },
+      { id: "m2", label: "Closed stance", meta: "Batting stance" },
+      { id: "m3", label: "Crouch", meta: "Batting stance" },
+      { id: "m4", label: "Wide stance", meta: "Batting stance" },
+      { id: "m5", label: "The Babe", meta: "Player nickname" },
+      { id: "m6", label: "The Iron Horse", meta: "Player nickname" },
+      { id: "m7", label: "Say Hey Kid", meta: "Player nickname" },
+      { id: "m8", label: "Hammerin' Hank", meta: "Player nickname" },
+      { id: "m9", label: "Babe Ruth", meta: "700 HR club" },
+      { id: "m10", label: "Barry Bonds", meta: "700 HR club" },
+      { id: "m11", label: "Hank Aaron", meta: "700 HR club" },
+      { id: "m12", label: "Albert Pujols", meta: "700 HR club" },
+      { id: "m13", label: "Yard", meta: "Synonym: ballpark" },
+      { id: "m14", label: "Park", meta: "Synonym: ballpark" },
+      { id: "m15", label: "Cathedral", meta: "Synonym: ballpark" },
+      { id: "m16", label: "Grounds", meta: "Synonym: ballpark" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Batting stance basics", description: "Ways a hitter can set up in the box" },
+      { id: "c2", tier: "medium", name: "Say the nickname", description: "Legendary nicknames tied to a specific player" },
+      { id: "c3", tier: "hard", name: "700 home run club", description: "Reached the rare 700-homer milestone" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for the stadium", description: "All ways fans refer to the ballpark" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-22",
+    title: "Full Count",
+    items: [
+      { id: "m1", label: "Tarp", meta: "Weather-game term" },
+      { id: "m2", label: "Grounds crew", meta: "Weather-game term" },
+      { id: "m3", label: "Rain delay", meta: "Weather-game term" },
+      { id: "m4", label: "Rain check", meta: "Weather-game term" },
+      { id: "m5", label: "Full count", meta: "Count description" },
+      { id: "m6", label: "3-2 count", meta: "Count description" },
+      { id: "m7", label: "Ahead in the count", meta: "Count description" },
+      { id: "m8", label: "Behind in the count", meta: "Count description" },
+      { id: "m9", label: "Barry Bonds", meta: "Back-to-back MVP" },
+      { id: "m10", label: "Frank Thomas", meta: "Back-to-back MVP" },
+      { id: "m11", label: "Roger Maris", meta: "Back-to-back MVP" },
+      { id: "m12", label: "Mike Schmidt", meta: "Back-to-back MVP" },
+      { id: "m13", label: "Free pass", meta: "Synonym: walk" },
+      { id: "m14", label: "Pass", meta: "Synonym: walk" },
+      { id: "m15", label: "Ticket", meta: "Synonym: walk" },
+      { id: "m16", label: "Free ride", meta: "Synonym: walk" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Rain or shine", description: "Terms tied to a weather-affected game" },
+      { id: "c2", tier: "medium", name: "The count is...", description: "Ways to describe the balls-and-strikes count" },
+      { id: "c3", tier: "hard", name: "Back-to-back MVP winners", description: "Won the MVP award in consecutive seasons" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for a walk", description: "All ways to say a batter reached first without swinging" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-23",
+    title: "Circle Change",
+    items: [
+      { id: "m1", label: "Two-seam grip", meta: "Pitch grip" },
+      { id: "m2", label: "Four-seam grip", meta: "Pitch grip" },
+      { id: "m3", label: "Split-finger grip", meta: "Pitch grip" },
+      { id: "m4", label: "Circle change grip", meta: "Pitch grip" },
+      { id: "m5", label: "Home Run Derby", meta: "All-Star event" },
+      { id: "m6", label: "Futures Game", meta: "All-Star event" },
+      { id: "m7", label: "All-Star Game", meta: "All-Star event" },
+      { id: "m8", label: "Celebrity softball game", meta: "All-Star event" },
+      { id: "m9", label: "Justin Verlander", meta: "20-win season" },
+      { id: "m10", label: "Max Scherzer", meta: "20-win season" },
+      { id: "m11", label: "Cliff Lee", meta: "20-win season" },
+      { id: "m12", label: "CC Sabathia", meta: "20-win season" },
+      { id: "m13", label: "Rubber", meta: "Missing word: ARM" },
+      { id: "m14", label: "Cannon", meta: "Missing word: ARM" },
+      { id: "m15", label: "Golden", meta: "Missing word: ARM" },
+      { id: "m16", label: "Rifle", meta: "Missing word: ARM" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Grip it", description: "Common ways a pitcher grips the ball" },
+      { id: "c2", tier: "medium", name: "All-Star weekend", description: "Events that make up the midsummer festivities" },
+      { id: "c3", tier: "hard", name: "20-win seasons (modern era)", description: "Pitchers who won 20 games in a season since 2000" },
+      { id: "c4", tier: "juiced", name: "JUICED: add \"arm\" after", description: "Each word comes before \"arm\" to describe a throwing arm" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-24",
+    title: "Sweet Spot",
+    items: [
+      { id: "m1", label: "Web", meta: "Glove part" },
+      { id: "m2", label: "Pocket", meta: "Glove part" },
+      { id: "m3", label: "Laces", meta: "Glove part" },
+      { id: "m4", label: "Palm", meta: "Glove part" },
+      { id: "m5", label: "Strike zone", meta: "Hitting zone" },
+      { id: "m6", label: "Sweet spot", meta: "Hitting zone" },
+      { id: "m7", label: "Wheelhouse", meta: "Hitting zone" },
+      { id: "m8", label: "Hot zone", meta: "Hitting zone" },
+      { id: "m9", label: "Derek Jeter", meta: "First-ballot HOF" },
+      { id: "m10", label: "Ken Griffey Jr.", meta: "First-ballot HOF" },
+      { id: "m11", label: "Cal Ripken Jr.", meta: "First-ballot HOF" },
+      { id: "m12", label: "Tom Seaver", meta: "First-ballot HOF" },
+      { id: "m13", label: "Web gem", meta: "Synonym: great catch" },
+      { id: "m14", label: "Highlight-reel grab", meta: "Synonym: great catch" },
+      { id: "m15", label: "Circus catch", meta: "Synonym: great catch" },
+      { id: "m16", label: "Gold-Glove grab", meta: "Synonym: great catch" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Glove talk", description: "Parts of a fielder's glove" },
+      { id: "c2", tier: "medium", name: "Say the zone", description: "Places a hitter loves to see the ball" },
+      { id: "c3", tier: "hard", name: "First-ballot Hall of Famers", description: "Elected to Cooperstown in their first year of eligibility" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for a great catch", description: "All ways to describe a jaw-dropping defensive play" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-25",
+    title: "Hot Zone",
+    items: [
+      { id: "m1", label: "Single", meta: "Type of hit" },
+      { id: "m2", label: "Double", meta: "Type of hit" },
+      { id: "m3", label: "Triple", meta: "Type of hit" },
+      { id: "m4", label: "Home run", meta: "Type of hit" },
+      { id: "m5", label: "Bases loaded", meta: "Game situation" },
+      { id: "m6", label: "Runner in scoring position", meta: "Game situation" },
+      { id: "m7", label: "Two outs", meta: "Game situation" },
+      { id: "m8", label: "Full count", meta: "Game situation" },
+      { id: "m9", label: "Tony Gwynn", meta: "Multi batting title" },
+      { id: "m10", label: "Rod Carew", meta: "Multi batting title" },
+      { id: "m11", label: "Ty Cobb", meta: "Multi batting title" },
+      { id: "m12", label: "Honus Wagner", meta: "Multi batting title" },
+      { id: "m13", label: "Hook", meta: "Synonym: curveball" },
+      { id: "m14", label: "Bender", meta: "Synonym: curveball" },
+      { id: "m15", label: "Yakker", meta: "Synonym: curveball" },
+      { id: "m16", label: "Deuce", meta: "Synonym: curveball" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Score some runs", description: "Types of hits, from smallest to biggest" },
+      { id: "c2", tier: "medium", name: "Say the situation", description: "Game states that raise the tension" },
+      { id: "c3", tier: "hard", name: "Multiple batting title winners", description: "Led their league in batting average more than once" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for a curveball", description: "All ways to say a pitcher threw a breaking ball" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-26",
+    title: "Foul Pole",
+    items: [
+      { id: "m1", label: "Foul ball", meta: "Fair/foul term" },
+      { id: "m2", label: "Fair ball", meta: "Fair/foul term" },
+      { id: "m3", label: "Foul tip", meta: "Fair/foul term" },
+      { id: "m4", label: "Foul pole", meta: "Fair/foul term" },
+      { id: "m5", label: "Starter", meta: "Player role" },
+      { id: "m6", label: "Reliever", meta: "Player role" },
+      { id: "m7", label: "Closer", meta: "Player role" },
+      { id: "m8", label: "Pinch runner", meta: "Player role" },
+      { id: "m9", label: "Cy Young", meta: "300 wins" },
+      { id: "m10", label: "Walter Johnson", meta: "300 wins" },
+      { id: "m11", label: "Greg Maddux", meta: "300 wins" },
+      { id: "m12", label: "Randy Johnson", meta: "300 wins" },
+      { id: "m13", label: "Wheels", meta: "Synonym: fast runner" },
+      { id: "m14", label: "Jets", meta: "Synonym: fast runner" },
+      { id: "m15", label: "Burner", meta: "Synonym: fast runner" },
+      { id: "m16", label: "Speedster", meta: "Synonym: fast runner" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Foul or fair", description: "Calls tied to where the ball lands" },
+      { id: "c2", tier: "medium", name: "Say the role", description: "Jobs a pitcher or runner can be assigned" },
+      { id: "c3", tier: "hard", name: "300-win club", description: "Pitchers who reached 300 career victories" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for a fast runner", description: "All ways to say a player has serious speed" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-27",
+    title: "Hitting Streak",
+    items: [
+      { id: "m1", label: "First pitch", meta: "Pregame ritual" },
+      { id: "m2", label: "National anthem", meta: "Pregame ritual" },
+      { id: "m3", label: "Ceremonial pitch", meta: "Pregame ritual" },
+      { id: "m4", label: "Lineup card", meta: "Pregame ritual" },
+      { id: "m5", label: "Bases loaded", meta: "Momentum moment" },
+      { id: "m6", label: "Full count", meta: "Momentum moment" },
+      { id: "m7", label: "Two-out rally", meta: "Momentum moment" },
+      { id: "m8", label: "Walk-off chance", meta: "Momentum moment" },
+      { id: "m9", label: "Joe DiMaggio", meta: "Hitting streak" },
+      { id: "m10", label: "Pete Rose", meta: "Hitting streak" },
+      { id: "m11", label: "Wee Willie Keeler", meta: "Hitting streak" },
+      { id: "m12", label: "Paul Molitor", meta: "Hitting streak" },
+      { id: "m13", label: "Winning", meta: "Missing word: STREAK" },
+      { id: "m14", label: "Hitting", meta: "Missing word: STREAK" },
+      { id: "m15", label: "Losing", meta: "Missing word: STREAK" },
+      { id: "m16", label: "Hot", meta: "Missing word: STREAK" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Play ball", description: "Things that happen before the first pitch" },
+      { id: "c2", tier: "medium", name: "Say the situation", description: "Moments that shift the momentum of a game" },
+      { id: "c3", tier: "hard", name: "Longest hitting streaks", description: "Among the longest consecutive-game hitting streaks in history" },
+      { id: "c4", tier: "juiced", name: "JUICED: add \"streak\" after", description: "Each word comes before \"streak\" to describe a run of games" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-28",
+    title: "Trophy Case",
+    items: [
+      { id: "m1", label: "Top of the inning", meta: "Game structure" },
+      { id: "m2", label: "Bottom of the inning", meta: "Game structure" },
+      { id: "m3", label: "Seventh-inning stretch", meta: "Game structure" },
+      { id: "m4", label: "Extra innings", meta: "Game structure" },
+      { id: "m5", label: "Commissioner's Trophy", meta: "League trophy" },
+      { id: "m6", label: "Silver Slugger", meta: "League trophy" },
+      { id: "m7", label: "Gold Glove", meta: "League trophy" },
+      { id: "m8", label: "Hank Aaron Award", meta: "League trophy" },
+      { id: "m9", label: "Mike Trout", meta: "Unanimous MVP" },
+      { id: "m10", label: "Bryce Harper", meta: "Unanimous MVP" },
+      { id: "m11", label: "Giancarlo Stanton", meta: "Unanimous MVP" },
+      { id: "m12", label: "Shohei Ohtani", meta: "Unanimous MVP" },
+      { id: "m13", label: "Pine", meta: "Synonym: bench player" },
+      { id: "m14", label: "Scrubs", meta: "Synonym: bench player" },
+      { id: "m15", label: "Reserves", meta: "Synonym: bench player" },
+      { id: "m16", label: "Backups", meta: "Synonym: bench player" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Nine innings", description: "Terms tied to the structure of a game" },
+      { id: "c2", tier: "medium", name: "Say the trophy", description: "Hardware a team or player can take home" },
+      { id: "c3", tier: "hard", name: "Unanimous MVP winners", description: "Won MVP with every single first-place vote" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for bench players", description: "All ways to describe players who aren't starting" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-29",
+    title: "Curtain Call",
+    items: [
+      { id: "m1", label: "Fist bump", meta: "Celebration" },
+      { id: "m2", label: "High five", meta: "Celebration" },
+      { id: "m3", label: "Curtain call", meta: "Celebration" },
+      { id: "m4", label: "Bat flip", meta: "Celebration" },
+      { id: "m5", label: "Trade deadline", meta: "Roster move" },
+      { id: "m6", label: "Waiver wire", meta: "Roster move" },
+      { id: "m7", label: "Rule 5 draft", meta: "Roster move" },
+      { id: "m8", label: "Rental player", meta: "Roster move" },
+      { id: "m9", label: "Ken Griffey Jr.", meta: "Derby champ" },
+      { id: "m10", label: "Prince Fielder", meta: "Derby champ" },
+      { id: "m11", label: "Yoenis Cespedes", meta: "Derby champ" },
+      { id: "m12", label: "Pete Alonso", meta: "Derby champ" },
+      { id: "m13", label: "Meatball", meta: "Synonym: mistake pitch" },
+      { id: "m14", label: "Cookie", meta: "Synonym: mistake pitch" },
+      { id: "m15", label: "Hanger", meta: "Synonym: mistake pitch" },
+      { id: "m16", label: "Gopher ball", meta: "Synonym: mistake pitch" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Signs of life", description: "Ways players celebrate on the field" },
+      { id: "c2", tier: "medium", name: "Say the deal", description: "Moves that shuffle a roster midseason" },
+      { id: "c3", tier: "hard", name: "Multiple Home Run Derby champs", description: "Won the Home Run Derby more than once" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for a mistake pitch", description: "All ways to say a pitch got crushed" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-30",
+    title: "Farewell Tour",
+    items: [
+      { id: "m1", label: "Retirement", meta: "Career sendoff" },
+      { id: "m2", label: "Farewell tour", meta: "Career sendoff" },
+      { id: "m3", label: "Final at-bat", meta: "Career sendoff" },
+      { id: "m4", label: "Jersey retirement", meta: "Career sendoff" },
+      { id: "m5", label: "Uniform number", meta: "Number term" },
+      { id: "m6", label: "Number retired", meta: "Number term" },
+      { id: "m7", label: "Number 42", meta: "Number term" },
+      { id: "m8", label: "Draft pick number", meta: "Number term" },
+      { id: "m9", label: "Félix Hernández", meta: "Recent perfect game" },
+      { id: "m10", label: "Roy Halladay", meta: "Recent perfect game" },
+      { id: "m11", label: "Dallas Braden", meta: "Recent perfect game" },
+      { id: "m12", label: "Mark Buehrle", meta: "Recent perfect game" },
+      { id: "m13", label: "Grizzled vet", meta: "Synonym: veteran" },
+      { id: "m14", label: "Old-timer", meta: "Synonym: veteran" },
+      { id: "m15", label: "Journeyman", meta: "Synonym: veteran" },
+      { id: "m16", label: "Elder statesman", meta: "Synonym: veteran" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Say goodnight", description: "Milestones that mark the end of a career" },
+      { id: "c2", tier: "medium", name: "Say the number", description: "Terms tied to the digits on a jersey" },
+      { id: "c3", tier: "hard", name: "Perfect games since 2009", description: "Threw a perfect game within the last two decades" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for a veteran", description: "All ways to describe a player who's been around" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
+  },
+
+  {
+    date: "2026-08-31",
+    title: "Titletown",
+    items: [
+      { id: "m1", label: "Postseason push", meta: "Playoff push" },
+      { id: "m2", label: "Magic number", meta: "Playoff push" },
+      { id: "m3", label: "Playoff race", meta: "Playoff push" },
+      { id: "m4", label: "Wild card spot", meta: "Playoff push" },
+      { id: "m5", label: "World Series ring", meta: "Championship moment" },
+      { id: "m6", label: "Championship parade", meta: "Championship moment" },
+      { id: "m7", label: "Trophy presentation", meta: "Championship moment" },
+      { id: "m8", label: "Confetti", meta: "Championship moment" },
+      { id: "m9", label: "New York Yankees (1998-2000)", meta: "Repeat champion" },
+      { id: "m10", label: "Oakland Athletics (1972-74)", meta: "Repeat champion" },
+      { id: "m11", label: "Toronto Blue Jays (1992-93)", meta: "Repeat champion" },
+      { id: "m12", label: "New York Yankees (1936-39)", meta: "Repeat champion" },
+      { id: "m13", label: "Dynasty", meta: "Synonym: champion team" },
+      { id: "m14", label: "Powerhouse", meta: "Synonym: champion team" },
+      { id: "m15", label: "Juggernaut", meta: "Synonym: champion team" },
+      { id: "m16", label: "Titletown", meta: "Synonym: champion team" }
+    ],
+    categories: [
+      { id: "c1", tier: "dirt-easy", name: "Final stretch", description: "Terms tied to a late-season playoff push" },
+      { id: "c2", tier: "medium", name: "Say the ring", description: "Things that come with winning it all" },
+      { id: "c3", tier: "hard", name: "Back-to-back World Series champs", description: "Won consecutive World Series titles" },
+      { id: "c4", tier: "juiced", name: "JUICED: slang for a champion team", description: "All ways to describe a team built to win it all" }
+    ],
+    assignment: { m1: "c1", m2: "c1", m3: "c1", m4: "c1", m5: "c2", m6: "c2", m7: "c2", m8: "c2", m9: "c3", m10: "c3", m11: "c3", m12: "c3", m13: "c4", m14: "c4", m15: "c4", m16: "c4" }
   }
-]
+
+];
+
+// CommonJS (Node/require, most bundlers):
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = DIAMOND_CONNECTIONS_AUGUST_2026;
+}
+
+// If your app uses ES module `import` syntax instead, delete the block
+// above and replace it with:
+//   export default DIAMOND_CONNECTIONS_AUGUST_2026;
