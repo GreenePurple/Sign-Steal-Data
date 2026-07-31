@@ -23,12 +23,14 @@ jobs:
 
       - run: npm run fetch
 
+      - run: npm run target
+
       - name: Commit and push if the data changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add lineup_40man_2026.json
-          if git diff --cached --quiet -- lineup_40man_2026.json; then
+          git add lineup_40man_2026.json daily_targets.json
+          if git diff --cached --quiet -- lineup_40man_2026.json daily_targets.json; then
             echo "No changes, nothing to commit."
             exit 0
           fi
