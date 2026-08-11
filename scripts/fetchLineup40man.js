@@ -29,13 +29,15 @@
  *   seasonStats — this year's batting/pitching line (AVG/HR/RBI/OPS or W/L/ERA/SO/WHIP), for the
  *                 reveal cards — distinct from `stats`, which is career totals
  *   allStar     — true if they've been an MLB All-Star at any point in their career
+ *   moment      — Beat the Clock clue: their single most notable career postseason game, if any
+ *                 (see postseasonMomentOf in scripts/lib/mlbApi.js)
  */
 const fs = require('fs');
 const path = require('path');
 const { addSkins } = require('./skinTone');
 const {
   getJSON, pool, num, yearOf, eraOf, careerStats, backupPosition,
-  isCareerAllStar, accoladesOf, teamHistory,
+  isCareerAllStar, accoladesOf, teamHistory, postseasonMomentOf,
 } = require('./lib/mlbApi');
 
 const API = 'https://statsapi.mlb.com/api/v1';
@@ -135,6 +137,7 @@ async function main() {
         position = pos.abbreviation || '';
         positionGroup = pos.type || '';
       }
+      const moment = await postseasonMomentOf(id, isPitcher);
       return {
         id: p.id,
         name: p.fullName,
@@ -152,6 +155,7 @@ async function main() {
         ...seasonStatsOf(p.stats),
         allStar: isCareerAllStar(p.awards),
         ...accoladesOf(p.awards),
+        ...(moment ? { moment } : {}),
         stats,
         teams: teamHistory(p.stats, abbrMap, isPitcher, currentTeamId, meta, SEASON),
       };

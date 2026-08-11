@@ -199,6 +199,129 @@ function teamHistory(groups, abbrMap, isPitcher, currentTeamId, currentMeta, sea
   return stints;
 }
 
+/** Whether one game's line clears each "notable" bar — used by the postseason moment scan below.
+ *  App repo mirror: src/state/GameContext.tsx uses the season-mode recentWalkoff/recentHero/
+ *  recentHighlight fields with this exact same threshold logic; keep both in lockstep. */
+function gameHighlightFlags(stat, isPitcher, isWin, isHome) {
+  const hr = num(stat.homeRuns) ?? 0;
+  const rbi = num(stat.rbi) ?? 0;
+  const hits = num(stat.hits) ?? 0;
+  const so = num(stat.strikeOuts) ?? 0;
+  const walks = num(stat.baseOnBalls) ?? 0;
+  const er = num(stat.earnedRuns) ?? 0;
+  const ip = num(stat.inningsPitched) ?? 0;
+  const sv = num(stat.saves) ?? 0;
+
+  const walkoff = !isPitcher && isWin && isHome && hr >= 1 && rbi >= 1;
+  const hero = (!isPitcher && (hr >= 1 || rbi >= 3 || hits >= 3)) ||
+    (isPitcher && ((sv >= 1 && isWin) || (isWin && ip >= 5 && er <= 2)));
+  const highlight = hero || (!isPitcher && hits >= 4) || (isPitcher && (so >= 5 || (ip >= 6 && er <= 2)));
+  const blunder = !isWin && ((!isPitcher && so >= 3 && hits <= 1) || (isPitcher && (er >= 4 || (walks >= 3 && hits >= 6))));
+
+  return { walkoff, hero, highlight, blunder };
+}
+
+// How postseason candidate games are ranked against each other once they've cleared
+// gameHighlightFlags' bar — a walk-off always wins outright; otherwise the biggest individual line.
+function momentScore(stat, isPitcher, walkoff) {
+  if (walkoff) return 10000;
+  if (isPitcher) {
+    const so = num(stat.strikeOuts) ?? 0;
+    const sv = num(stat.saves) ?? 0;
+    const ip = num(stat.inningsPitched) ?? 0;
+    const er = num(stat.earnedRuns) ?? 0;
+    return so * 3 + (sv >= 1 ? 30 : 0) + Math.max(0, ip - er * 2) * 4;
+  }
+  const hr = num(stat.homeRuns) ?? 0;
+  const rbi = num(stat.rbi) ?? 0;
+  const hits = num(stat.hits) ?? 0;
+  return hr * 40 + rbi * 8 + hits * 3;
+}
+
+// gameType codes (see /api/v1/gameTypes): F=Wild Card, D=Division Series, L=Championship Series,
+// W=World Series. D/L need the league (103=AL/104=NL) to become ALDS/NLDS or ALCS/NLCS.
+function roundNameFor(gameType, leagueId) {
+  const isAL = leagueId === 103;
+  if (gameType === 'F') return 'Wild Card';
+  if (gameType === 'D') return isAL ? 'ALDS' : 'NLDS';
+  if (gameType === 'L') return isAL ? 'ALCS' : 'NLCS';
+  return 'World Series';
+}
+
+/**
+ * The player's single most notable postseason game across their whole career, for the Rundown
+ * "Moment" clue — or `undefined` if none clears gameHighlightFlags' bar (true of most players,
+ * including anyone with no postseason experience at all).
+ *
+ * Three calls minimum, only for players who ever reached the postseason: a cheap career-totals
+ * check (skip everyone else in one call), a year list (yearByYear must use the *direct*
+ * `stats=yearByYear&gameType=P` endpoint — the nested `hydrate=stats(type=[yearByYearPlayoffs])`
+ * form silently ignores the postseason filter and returns regular-season totals instead), then one
+ * game log per postseason year played. A final boxscore call (hitters only) resolves the batting
+ * order for whichever game wins.
+ */
+async function postseasonMomentOf(id, isPitcher) {
+  const group = isPitcher ? 'pitching' : 'hitting';
+
+  const careerData = await getJSON(`${API}/people/${id}/stats?stats=career&group=${group}&sportIds=1&gameType=P`);
+  const careerStat = careerData.stats && careerData.stats[0] && careerData.stats[0].splits && careerData.stats[0].splits[0] && careerData.stats[0].splits[0].stat;
+  const workload = careerStat && (isPitcher ? num(careerStat.inningsPitched) : num(careerStat.plateAppearances));
+  if (!workload) return undefined;
+
+  const ybyData = await getJSON(`${API}/people/${id}/stats?stats=yearByYear&group=${group}&sportIds=1&gameType=P`);
+  const years = ((ybyData.stats && ybyData.stats[0] && ybyData.stats[0].splits) || []).map((s) => s.season).filter(Boolean);
+  if (years.length === 0) return undefined;
+
+  let best = null;
+  for (const year of years) {
+    const logData = await getJSON(`${API}/people/${id}/stats?stats=gameLog&season=${year}&group=${group}&sportIds=1&gameType=P`);
+    for (const sp of (logData.stats && logData.stats[0] && logData.stats[0].splits) || []) {
+      const stat = sp.stat || {};
+      const flags = gameHighlightFlags(stat, isPitcher, sp.isWin === true, sp.isHome === true);
+      if (!flags.walkoff && !flags.highlight) continue;
+      const score = momentScore(stat, isPitcher, flags.walkoff);
+      if (!best || score > best.score) best = { sp, stat, score, walkoff: flags.walkoff };
+    }
+  }
+  if (!best) return undefined;
+
+  const moment = {
+    year: Number(best.sp.season),
+    round: roundNameFor(best.sp.gameType, best.sp.league && best.sp.league.id),
+  };
+  if (isPitcher) {
+    if (num(best.stat.strikeOuts)) moment.so = num(best.stat.strikeOuts);
+    if (num(best.stat.inningsPitched)) moment.ip = num(best.stat.inningsPitched);
+    if (num(best.stat.saves)) moment.sv = num(best.stat.saves);
+  } else {
+    if (num(best.stat.homeRuns)) moment.hr = num(best.stat.homeRuns);
+    if (num(best.stat.rbi)) moment.rbi = num(best.stat.rbi);
+    if (num(best.stat.hits)) moment.hits = num(best.stat.hits);
+  }
+  if (best.walkoff) moment.walkoff = true;
+
+  if (!isPitcher && best.sp.game && best.sp.game.gamePk) {
+    try {
+      const box = await getJSON(`${API}/game/${best.sp.game.gamePk}/boxscore`);
+      const key = `ID${id}`;
+      const side = box.teams && box.teams.home && box.teams.home.players && box.teams.home.players[key]
+        ? 'home'
+        : box.teams && box.teams.away && box.teams.away.players && box.teams.away.players[key]
+          ? 'away'
+          : null;
+      const order = side && box.teams[side].players[key].battingOrder;
+      if (order) {
+        const slot = Math.floor(Number(order) / 100);
+        if (slot >= 1 && slot <= 9) moment.battingOrder = slot;
+      }
+    } catch {
+      /* best-effort — moment still stands without a batting-order detail */
+    }
+  }
+
+  return moment;
+}
+
 module.exports = {
   API,
   DIVISION_CODE,
@@ -214,4 +337,6 @@ module.exports = {
   ACCOLADE_IDS,
   accoladesOf,
   teamHistory,
+  gameHighlightFlags,
+  postseasonMomentOf,
 };
