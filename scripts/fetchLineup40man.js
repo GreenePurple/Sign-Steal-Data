@@ -37,7 +37,7 @@ const path = require('path');
 const { addSkins } = require('./skinTone');
 const {
   getJSON, pool, num, yearOf, eraOf, careerStats, backupPosition,
-  isCareerAllStar, accoladesOf, teamHistory, postseasonMomentOf,
+  isCareerAllStar, accoladesOf, teamHistory, postseasonMomentOf, isAllStarStarter,
 } = require('./lib/mlbApi');
 
 const API = 'https://statsapi.mlb.com/api/v1';
@@ -138,6 +138,8 @@ async function main() {
         positionGroup = pos.type || '';
       }
       const moment = await postseasonMomentOf(id, isPitcher);
+      const allStar = isCareerAllStar(p.awards);
+      const allStarStarter = allStar && (await isAllStarStarter(id, p.awards));
       return {
         id: p.id,
         name: p.fullName,
@@ -153,7 +155,8 @@ async function main() {
         startYear: start,
         endYear: end,
         ...seasonStatsOf(p.stats),
-        allStar: isCareerAllStar(p.awards),
+        allStar,
+        ...(allStarStarter ? { allStarStarter: true } : {}),
         ...accoladesOf(p.awards),
         ...(moment ? { moment } : {}),
         stats,

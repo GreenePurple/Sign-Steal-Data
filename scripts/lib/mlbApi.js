@@ -121,6 +121,8 @@ const ACCOLADE_IDS = {
   cyYoung: new Set(['ALCY', 'NLCY']),
   goldGlove: new Set(['ALGG', 'NLGG']),
   silverSlugger: new Set(['ALSS', 'NLSS']),
+  hrDerby: new Set(['HRDERBY']),
+  hrDerbyWin: new Set(['HRDERBYWIN']),
 };
 
 /** Career major-league accolades for the Rundown clue ladder. Only truthy flags are emitted. */
@@ -239,13 +241,44 @@ function momentScore(stat, isPitcher, walkoff) {
 }
 
 // gameType codes (see /api/v1/gameTypes): F=Wild Card, D=Division Series, L=Championship Series,
-// W=World Series. D/L need the league (103=AL/104=NL) to become ALDS/NLDS or ALCS/NLCS.
+// W=World Series. D/L need the league (103=AL/104=NL) to become ALDS/NLDS or ALCS/NLCS. Fallback
+// only — seriesInfoFor below is the authoritative source; this covers it being unreachable.
 function roundNameFor(gameType, leagueId) {
   const isAL = leagueId === 103;
   if (gameType === 'F') return 'Wild Card';
   if (gameType === 'D') return isAL ? 'ALDS' : 'NLDS';
   if (gameType === 'L') return isAL ? 'ALCS' : 'NLCS';
   return 'World Series';
+}
+
+function roundNameFromDescription(desc) {
+  if (!desc) return undefined;
+  if (/wild card/i.test(desc)) return 'Wild Card';
+  if (/division series/i.test(desc)) return /^AL/.test(desc) ? 'ALDS' : 'NLDS';
+  if (/championship series/i.test(desc)) return /^AL/.test(desc) ? 'ALCS' : 'NLCS';
+  if (/world series/i.test(desc)) return 'World Series';
+  return undefined;
+}
+
+/**
+ * Authoritative round name + which game of the series, for one specific gamePk — needed because a
+ * postseason game log split's own `gameType` field is only reliable for the hitting group (it
+ * correctly reports D/L/W there) but comes back as the generic umbrella `"P"` for the pitching
+ * group, which would otherwise mislabel every pitcher's moment as the World Series (the
+ * `roundNameFor` fallback's default). The schedule endpoint reports both correctly regardless of
+ * group, plus `seriesGameNumber` (Game 1, 2, 3...), which the pitcher-only "started Game 1" framing
+ * in the Rundown clue needs.
+ */
+async function seriesInfoFor(gamePk) {
+  try {
+    const sched = await getJSON(`${API}/schedule?gamePk=${gamePk}`);
+    const g = sched.dates && sched.dates[0] && sched.dates[0].games && sched.dates[0].games[0];
+    if (!g) return null;
+    const round = roundNameFromDescription(g.seriesDescription) || roundNameFor(g.gameType, undefined);
+    return { round, gameNumber: g.seriesGameNumber };
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -257,8 +290,8 @@ function roundNameFor(gameType, leagueId) {
  * check (skip everyone else in one call), a year list (yearByYear must use the *direct*
  * `stats=yearByYear&gameType=P` endpoint — the nested `hydrate=stats(type=[yearByYearPlayoffs])`
  * form silently ignores the postseason filter and returns regular-season totals instead), then one
- * game log per postseason year played. A final boxscore call (hitters only) resolves the batting
- * order for whichever game wins.
+ * game log per postseason year played. Two final calls resolve the winning game's authoritative
+ * round/game-number (seriesInfoFor) and, for hitters only, its batting order.
  */
 async function postseasonMomentOf(id, isPitcher) {
   const group = isPitcher ? 'pitching' : 'hitting';
@@ -285,10 +318,13 @@ async function postseasonMomentOf(id, isPitcher) {
   }
   if (!best) return undefined;
 
+  const gamePk = best.sp.game && best.sp.game.gamePk;
+  const info = gamePk ? await seriesInfoFor(gamePk) : null;
   const moment = {
     year: Number(best.sp.season),
-    round: roundNameFor(best.sp.gameType, best.sp.league && best.sp.league.id),
+    round: (info && info.round) || roundNameFor(best.sp.gameType, best.sp.league && best.sp.league.id),
   };
+  if (info && info.gameNumber) moment.gameNumber = info.gameNumber;
   if (isPitcher) {
     if (num(best.stat.strikeOuts)) moment.so = num(best.stat.strikeOuts);
     if (num(best.stat.inningsPitched)) moment.ip = num(best.stat.inningsPitched);
@@ -300,9 +336,9 @@ async function postseasonMomentOf(id, isPitcher) {
   }
   if (best.walkoff) moment.walkoff = true;
 
-  if (!isPitcher && best.sp.game && best.sp.game.gamePk) {
+  if (!isPitcher && gamePk) {
     try {
-      const box = await getJSON(`${API}/game/${best.sp.game.gamePk}/boxscore`);
+      const box = await getJSON(`${API}/game/${gamePk}/boxscore`);
       const key = `ID${id}`;
       const side = box.teams && box.teams.home && box.teams.home.players && box.teams.home.players[key]
         ? 'home'
@@ -322,6 +358,58 @@ async function postseasonMomentOf(id, isPitcher) {
   return moment;
 }
 
+// All-Star Game starters, cached per SEASON rather than per player — the boxscore lookup doesn't
+// vary by player, so every player selected in a given year shares one lookup. Bounds the total added
+// cost to roughly one schedule + one boxscore call per distinct All-Star *season* represented across
+// the whole pool (~90 across MLB history), not one per player, however many times they were picked.
+// The Map stores the in-flight promise itself (not just the eventual Set) so concurrent callers for
+// a season neither of them has seen yet share the same fetch instead of triggering it twice.
+const asgStarterCache = new Map();
+
+async function fetchAllStarStarters(season) {
+  const starters = new Set();
+  try {
+    const sched = await getJSON(`${API}/schedule?sportId=1&gameType=A&season=${season}`);
+    const gamePks = [];
+    for (const date of sched.dates || []) {
+      for (const g of date.games || []) gamePks.push(g.gamePk);
+    }
+    for (const pk of gamePks) {
+      const box = await getJSON(`${API}/game/${pk}/boxscore`);
+      for (const side of ['home', 'away']) {
+        const team = box.teams && box.teams[side];
+        if (!team || !team.players) continue;
+        for (const player of Object.values(team.players)) {
+          // battingOrder "X00" is the original starting lineup slot X; "X01"+ is a substitute who
+          // entered later at that same spot — only the "00" suffix means they started the game.
+          const bo = player.battingOrder;
+          if (bo && Number(bo) % 100 === 0) starters.add(player.person.id);
+        }
+        if (team.pitchers && team.pitchers.length) starters.add(team.pitchers[0]);
+      }
+    }
+  } catch {
+    /* best-effort — an unresolved season just yields no recorded starters for it */
+  }
+  return starters;
+}
+
+function allStarStartersFor(season) {
+  if (!asgStarterCache.has(season)) asgStarterCache.set(season, fetchAllStarStarters(season));
+  return asgStarterCache.get(season);
+}
+
+/** True if any of the player's All-Star selections (from their already-fetched `awards` list) was
+ *  as a starter, not just a roster spot. */
+async function isAllStarStarter(id, awards) {
+  const seasons = (awards || []).filter((a) => a.id === 'ALAS' || a.id === 'NLAS').map((a) => a.season).filter(Boolean);
+  for (const season of seasons) {
+    const starters = await allStarStartersFor(season);
+    if (starters.has(id)) return true;
+  }
+  return false;
+}
+
 module.exports = {
   API,
   DIVISION_CODE,
@@ -339,4 +427,5 @@ module.exports = {
   teamHistory,
   gameHighlightFlags,
   postseasonMomentOf,
+  isAllStarStarter,
 };
