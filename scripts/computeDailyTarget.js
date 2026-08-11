@@ -17,6 +17,12 @@
  * Picks are also checked for a "twin": another guessable player who reads identically on all five
  * hint columns (team, division, position, throwing arm, debut year). A target with a twin would
  * let a wrong guess light up all green, so twins are skipped in favor of the next-best candidate.
+ *
+ * The target-eligible pool (targetPoolFrom) is further narrowed to the top 25% by a "notability"
+ * score (targetScore) — All-Star / MVP / Cy Young / ROY / Gold Glove / Silver Slugger nods, recent
+ * highlight-reel games, career longevity, and this season's counting stats — before the daily hash
+ * picks from it. Without this, the answer is drawn from every 100-PA/30-IP/10-SV player, which
+ * includes plenty of replacement-level bench bats and middle relievers nobody would recognize.
  */
 const fs = require('fs');
 const path = require('path');
@@ -24,9 +30,9 @@ const path = require('path');
 const ROSTER_FILE = path.join(__dirname, '..', 'lineup_40man_2026.json');
 const OUT = path.join(__dirname, '..', 'daily_targets.json');
 
-// Same hash + eligibility rules as the app's src/utils/similarity.ts / src/state/GameContext.ts —
-// kept in lockstep so a local fallback pick (for a date this file hasn't published yet) agrees
-// with what this script would have chosen.
+// Same hash + eligibility + notability-ranking rules as the app's src/utils/similarity.ts /
+// src/state/GameContext.tsx — kept in lockstep so a local fallback pick (for a date this file
+// hasn't published yet) agrees with what this script would have chosen.
 function hash32(a, b) {
   let h = (Math.imul(a, 2654435761) ^ b) >>> 0;
   h = Math.imul(h ^ (h >>> 16), 2246822519);
@@ -48,6 +54,51 @@ function targetPoolFrom(players) {
   return players.filter(
     (p) => (p.seasonPA ?? 0) >= 100 || (p.seasonIP ?? 0) >= 30 || (p.seasonSV ?? 0) >= 10 || p.allStar === true,
   );
+}
+
+function targetScore(p) {
+  const season = p.seasonStats ?? {};
+  const careerG = p.stats?.G ?? 0;
+  const careerIP = p.stats?.IP ?? 0;
+
+  let score = 0;
+  score += p.allStar ? 450 : 0;
+  score += p.mvp ? 500 : 0;
+  score += p.cyYoung ? 400 : 0;
+  score += p.roy ? 200 : 0;
+  score += p.goldGlove ? 120 : 0;
+  score += p.silverSlugger ? 120 : 0;
+  score += p.recentWalkoff ? 300 : 0;
+  score += p.recentHero ? 220 : 0;
+  score += p.recentHighlight ? 140 : 0;
+  score += p.recentBlunder ? 90 : 0;
+  score += careerG * 0.2;
+  score += careerIP * 0.3;
+
+  if (p.positionGroup === 'Pitcher') {
+    score += (p.seasonSV ?? 0) * 12;
+    score += (p.seasonIP ?? 0) * 1.2;
+    score += (season.W ?? 0) * 22;
+    score += Math.max(0, 4.5 - (season.ERA ?? 10)) * 22;
+    score += (season.SO ?? 0) * 1.2;
+  } else {
+    score += (season.HR ?? 0) * 8;
+    score += (season.RBI ?? 0) * 1.2;
+    score += (season.SB ?? 0) * 2.5;
+    score += Math.max(0, (season.OPS ?? 0) - 0.72) * 520;
+  }
+
+  return score;
+}
+
+/** Top 25% (min 16) of the target-eligible pool by notability score. */
+function topNotableTargets(pool) {
+  const ranked = pool.slice().sort((a, b) => {
+    const delta = targetScore(b) - targetScore(a);
+    return delta !== 0 ? delta : a.id - b.id;
+  });
+  const bandSize = Math.max(16, Math.round(ranked.length * 0.25));
+  return ranked.slice(0, bandSize);
 }
 
 /** True if `candidate` reads identically to some other guessable player on every hint column. */
@@ -82,8 +133,8 @@ function isoDate({ y, m, day }) {
 
 function main() {
   const players = JSON.parse(fs.readFileSync(ROSTER_FILE, 'utf8'));
-  const pool = targetPoolFrom(players);
-  console.log(`Loaded ${players.length} guessable players, ${pool.length} target-eligible.`);
+  const pool = topNotableTargets(targetPoolFrom(players));
+  console.log(`Loaded ${players.length} guessable players, ${pool.length} in the notable band.`);
 
   let published = [];
   if (fs.existsSync(OUT)) {

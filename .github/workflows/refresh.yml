@@ -2,8 +2,12 @@ name: Daily roster refresh
 
 on:
   schedule:
-    # 09:00 UTC daily — after MLB Stats API rosters/box scores settle overnight.
-    - cron: '0 9 * * *'
+    # Midnight UTC daily, so the new roster/target/stats snapshot is ready before most devices'
+    # local calendar day rolls over. Box scores for games still in progress at 00:00 UTC (e.g.
+    # West Coast night games) may not be final yet — that only affects that game's own stat line,
+    # not the target pick itself (computeDailyTarget.js's dual-day UTC publish already covers the
+    # timezone-rollover gap independent of this run time).
+    - cron: '0 0 * * *'
   workflow_dispatch: {}
 
 permissions:
