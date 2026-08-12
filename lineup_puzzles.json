@@ -1,0 +1,321 @@
+[
+  {
+    "id": "2001-ws-g4-yankees",
+    "date": "2026-08-12",
+    "team": {
+      "name": "New York Yankees",
+      "abbr": "NYY"
+    },
+    "opponent": {
+      "name": "Arizona Diamondbacks",
+      "abbr": "AZ"
+    },
+    "pitcher": "Byung-Hyun Kim",
+    "season": 2001,
+    "momentTitle": "2001 World Series Game 4",
+    "blurb": "Trailing late in a game they couldn't afford to lose, one team clawed back to tie it against the other side's very best reliever. Then something happened that had never happened before in World Series history — the clock struck midnight, and play rolled into a brand-new month. Whoever swung next would earn a nickname to match the calendar. Can you guess who it was?",
+    "context": {
+      "world": "The country was still coming together in the weeks after September 11th — ballparks included, where 'God Bless America' had just become a seventh-inning tradition that continues to this day.",
+      "movie": "K-PAX, starring Kevin Spacey, was the No. 1 movie at the box office that weekend.",
+      "news": "Apple's brand-new iPod — a strange little device that promised '1,000 songs in your pocket' — had gone on sale just eight days earlier."
+    },
+    "lineup": [
+      {
+        "slot": 1,
+        "position": "LF",
+        "name": "Chuck Knoblauch",
+        "isMissing": false,
+        "skin": "#D9AC97"
+      },
+      {
+        "slot": 2,
+        "position": "SS",
+        "name": null,
+        "isMissing": true,
+        "skin": "#C68B6B"
+      },
+      {
+        "slot": 3,
+        "position": "RF",
+        "name": "Paul O'Neill",
+        "isMissing": false,
+        "skin": "#D9AC97"
+      },
+      {
+        "slot": 4,
+        "position": "CF",
+        "name": "Bernie Williams",
+        "isMissing": false,
+        "skin": "#C68B6B"
+      },
+      {
+        "slot": 5,
+        "position": "1B",
+        "name": "Tino Martinez",
+        "isMissing": false,
+        "skin": "#D9AC97"
+      },
+      {
+        "slot": 6,
+        "position": "C",
+        "name": "Jorge Posada",
+        "isMissing": false,
+        "skin": "#C68B6B"
+      },
+      {
+        "slot": 7,
+        "position": "3B",
+        "name": "Scott Brosius",
+        "isMissing": false,
+        "skin": "#D9AC97"
+      },
+      {
+        "slot": 8,
+        "position": "2B",
+        "name": "Alfonso Soriano",
+        "isMissing": false,
+        "skin": "#C68B6B"
+      },
+      {
+        "slot": 9,
+        "position": "P",
+        "name": "Orlando Hernandez",
+        "isMissing": false,
+        "skin": "#C68B6B"
+      }
+    ],
+    "missingSlot": 2,
+    "answer": "Derek Jeter",
+    "answerAliases": [
+      "Jeter"
+    ],
+    "hints": [
+      "Batted second for New York all season, right in front of the middle of the order.",
+      "The go-ahead home run landed just after midnight, on the first day of a new month.",
+      "The moment earned him a nickname built around that month's name."
+    ],
+    "recap": {
+      "headline": "Mr. November",
+      "body": "With the game tied and the clock past midnight on November 1st, this shortstop worked a full count and drove a pitch into the right-field seats for a walk-off home run — the first ever hit in November, and the moment that gave him a nickname for life.",
+      "source": "Editorial placeholder — verify lineup order/details before publishing."
+    },
+    "tidbits": [
+      "This was the third straight game the Yankees won in their final at-bat that series — Games 4 and 5 both ended on walk-off homers on back-to-back nights.",
+      "The 2001 Yankees were chasing a fourth straight championship, a repeat-four-peat no team has matched since.",
+      "Arizona's closer had converted the previous save chance the night before — this was the first blown save of his postseason."
+    ]
+  },
+  {
+    "id": "2004-alcs-g4-red-sox",
+    "date": "2026-08-13",
+    "team": {
+      "name": "Boston Red Sox",
+      "abbr": "BOS"
+    },
+    "opponent": {
+      "name": "New York Yankees",
+      "abbr": "NYY"
+    },
+    "pitcher": "Paul Quantrill",
+    "season": 2004,
+    "momentTitle": "2004 ALCS Game 4",
+    "blurb": "Down three games to none against their fiercest rival, with the season three outs from over, one team refused to fold. The game stretched deep into extra innings until one mighty swing sent it into the night sky — and sparked the greatest comeback in postseason history. Who delivered the blast that kept the dream alive?",
+    "context": {
+      "world": "The 2004 presidential race between George W. Bush and John Kerry was in its final, razor-close stretch, just over two weeks from Election Day.",
+      "movie": "Shark Tale was the No. 1 movie at the box office that weekend.",
+      "news": "That same month, NASA's Cassini spacecraft was making one of its first close flybys of Saturn's giant moon, Titan."
+    },
+    "lineup": [
+      {
+        "slot": 1,
+        "position": "CF",
+        "name": "Johnny Damon",
+        "isMissing": false,
+        "skin": "#D9AC97"
+      },
+      {
+        "slot": 2,
+        "position": "2B",
+        "name": "Mark Bellhorn",
+        "isMissing": false,
+        "skin": "#D9AC97"
+      },
+      {
+        "slot": 3,
+        "position": "SS",
+        "name": "Orlando Cabrera",
+        "isMissing": false,
+        "skin": "#C68B6B"
+      },
+      {
+        "slot": 4,
+        "position": "LF",
+        "name": "Manny Ramirez",
+        "isMissing": false,
+        "skin": "#774939"
+      },
+      {
+        "slot": 5,
+        "position": "DH",
+        "name": null,
+        "isMissing": true,
+        "skin": "#774939"
+      },
+      {
+        "slot": 6,
+        "position": "1B",
+        "name": "Kevin Millar",
+        "isMissing": false,
+        "skin": "#D9AC97"
+      },
+      {
+        "slot": 7,
+        "position": "3B",
+        "name": "Bill Mueller",
+        "isMissing": false,
+        "skin": "#D9AC97"
+      },
+      {
+        "slot": 8,
+        "position": "RF",
+        "name": "Trot Nixon",
+        "isMissing": false,
+        "skin": "#D9AC97"
+      },
+      {
+        "slot": 9,
+        "position": "C",
+        "name": "Jason Varitek",
+        "isMissing": false,
+        "skin": "#D9AC97"
+      }
+    ],
+    "missingSlot": 5,
+    "answer": "David Ortiz",
+    "answerAliases": [
+      "Big Papi",
+      "Papi"
+    ],
+    "hints": [
+      "Signed as a free agent after his previous team, the Twins, let him go.",
+      "Batted fifth, right behind the middle of Boston's order.",
+      "His walk-off swing in the twelfth inning kept the season alive by the barest of margins."
+    ],
+    "recap": {
+      "headline": "The Comeback Begins",
+      "body": "Facing elimination for the first time all October, this designated hitter drove a walk-off home run into the Boston bullpen in the twelfth inning — the first domino in a four-game sweep of the Yankees that erased a 3-0 series deficit, still the only one in MLB postseason history.",
+      "source": "Editorial placeholder — verify lineup order/details before publishing."
+    },
+    "tidbits": [
+      "This Red Sox team ended an 86-year championship drought that dated back to 1918 — the so-called Curse of the Bambino.",
+      "Boston won the next 8 games in a row after this one, sweeping both the ALCS and the World Series without a single loss.",
+      "This same roster's nickname, 'The Idiots,' was self-applied — a loose, shaggy-haired team that leaned into not overthinking the moment."
+    ]
+  },
+  {
+    "id": "1986-ws-g6-mets",
+    "date": "2026-08-14",
+    "team": {
+      "name": "New York Mets",
+      "abbr": "NYM"
+    },
+    "opponent": {
+      "name": "Boston Red Sox",
+      "abbr": "BOS"
+    },
+    "pitcher": "Bob Stanley",
+    "season": 1986,
+    "momentTitle": "1986 World Series Game 6",
+    "blurb": "One strike. That's all that stood between one team and the end of their season — twice. Somehow, they tied it anyway. Then a slow, ordinary ground ball rolled toward first base... and turned into one of the most replayed plays in baseball history. Who was standing at the plate when it happened?",
+    "context": {
+      "world": "Just two weeks earlier, President Reagan and Soviet leader Gorbachev had walked away from a major summit without a deal — a tense moment in the long Cold War standoff.",
+      "movie": "Crocodile Dundee was the No. 1 movie at the box office that weekend.",
+      "news": "Earlier that year, Halley's Comet had swung past Earth — a once-in-a-lifetime sight that won't return until 2061."
+    },
+    "lineup": [
+      {
+        "slot": 1,
+        "position": "CF",
+        "name": null,
+        "isMissing": true,
+        "skin": "#774939"
+      },
+      {
+        "slot": 2,
+        "position": "2B",
+        "name": "Wally Backman",
+        "isMissing": false,
+        "skin": "#D9AC97"
+      },
+      {
+        "slot": 3,
+        "position": "1B",
+        "name": "Keith Hernandez",
+        "isMissing": false,
+        "skin": "#D9AC97"
+      },
+      {
+        "slot": 4,
+        "position": "C",
+        "name": "Gary Carter",
+        "isMissing": false,
+        "skin": "#D9AC97"
+      },
+      {
+        "slot": 5,
+        "position": "RF",
+        "name": "Darryl Strawberry",
+        "isMissing": false,
+        "skin": "#774939"
+      },
+      {
+        "slot": 6,
+        "position": "3B",
+        "name": "Ray Knight",
+        "isMissing": false,
+        "skin": "#D9AC97"
+      },
+      {
+        "slot": 7,
+        "position": "LF",
+        "name": "Kevin Mitchell",
+        "isMissing": false,
+        "skin": "#774939"
+      },
+      {
+        "slot": 8,
+        "position": "SS",
+        "name": "Rafael Santana",
+        "isMissing": false,
+        "skin": "#C68B6B"
+      },
+      {
+        "slot": 9,
+        "position": "P",
+        "name": "Ron Darling",
+        "isMissing": false,
+        "skin": "#C68B6B"
+      }
+    ],
+    "missingSlot": 1,
+    "answer": "Mookie Wilson",
+    "answerAliases": [
+      "Mookie"
+    ],
+    "hints": [
+      "A switch-hitter who spent most of a decade patrolling center field for the Mets.",
+      "Batted leadoff and fouled off pitch after pitch before putting the ball in play.",
+      "The grounder he hit became the most replayed play of the entire series."
+    ],
+    "recap": {
+      "headline": "The Ball Gets Through",
+      "body": "Batting leadoff with the Mets one strike from elimination, this outfielder fought off a ten-pitch at-bat and chopped a slow roller toward first base — one that skipped under the first baseman's glove, scoring the winning run and forcing a Game 7 the Mets would go on to win.",
+      "source": "Editorial placeholder — verify lineup order/details before publishing."
+    },
+    "tidbits": [
+      "The Mets were down to their final strike twice in that tenth inning before ever tying the game.",
+      "This 1986 roster won 108 regular-season games, still one of the winningest teams in modern MLB history.",
+      "The ball that got through is on display in the National Baseball Hall of Fame."
+    ]
+  }
+]
